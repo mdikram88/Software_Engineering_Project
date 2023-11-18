@@ -1,0 +1,86 @@
+{% extends 'header and footer.html' %}
+{% block main_content %}
+
+    <div class="row ">
+<!-- md is for space(medium)after border,ranges from 1 to 6, if you want 2 col, 12/2, if 3 cols, 12/3-->
+       
+      <div class="col col-md-6">
+        <br><br>
+        <div class="card" style="width=120%">
+            <img src="../static/images/view_profile.jpg" class="card-img-top" alt="...">
+            
+        </div>
+      </div>
+      <div class="col col-md-6">
+        <br>
+<!-- br for space-->
+        <h2>Welcome <em><strong>{{data.name}}</strong></em> to Profile Page</h2>
+           <br><br>
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                {% for message in messages %}
+            <span style="color:red;"><strong><em>{{ message }}</em></strong></span>
+          <br>
+          <br>
+                {% endfor %}
+              {% endif %}
+           {% endwith %}
+
+           <div class="ms-2 me-auto">
+            <span class="fw-bold">Name: &nbsp;</span>{{data.name}}<br>
+           </div>
+
+           <div class="ms-2 me-auto">
+            <span class="fw-bold">Email: &nbsp;</span>{{data.email}}<br>
+           </div>
+
+          <div class="ms-2 me-auto">
+            <span class="fw-bold">Username: &nbsp;</span>{{data.username}}<br>
+           </div>
+
+
+          <div class="ms-2 me-auto">
+            <span class="fw-bold">Password: &nbsp;</span>{{data.password}}<br>
+          </div>
+
+          <div class="ms-2 me-auto">
+            <span class="fw-bold">Reset Code: &nbsp;</span>{{data.reset_code}}<br>
+          </div>
+
+
+          <div class="ms-2 me-auto">
+            <span class="fw-bold">Verified: &nbsp;</span>{{"Yes" if data.verified else "No"}}<br>
+           </div>
+
+           <div class="ms-2 me-auto">
+            
+                <span class="fw-bold">Dual Degree: &nbsp;</span>{{"Yes" if data.dual_degree else "No"}}<br>
+            
+           </div>
+
+           <div class="ms-2 me-auto">
+            <span class="fw-bold">Side Work: &nbsp;</span>{{"Yes" if data.side_work else "No"}}<br>
+           </div>
+
+           <div class="ms-2 me-auto">
+            <span class="fw-bold">Additional Education: </span>
+               <br>
+               <br>
+               <textarea rows="3" class="form-control" disabled>{{data.additional_education}}</textarea><br>
+           </div>
+          
+          
+           <br>
+           
+            
+            <div class="text-center text-dark">
+                <span><a href="/edit_profile/{{data.user_id}}"><button type="submit" class="btn btn-primary">Edit Profile</button></a>&nbsp;&nbsp;&nbsp;</span>
+            </div>
+            
+       <br><br>
+            
+        </div>    
+      </div>
+    </div>
+</div>
+{% endblock %}

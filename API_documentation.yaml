@@ -1,0 +1,1393 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: COURSE API
+  description: This is the API Documentation of Course Recommender System of Team Sept-07
+servers:
+  - url: http://127.0.0.1:5001
+tags:
+  - name: User
+  - name: Course
+  - name: Enrollment
+  - name: Review
+  - name: Admin
+  - name: Additionals
+  
+paths:
+  /api/login:
+    
+    description: End Point for Login
+    post:
+      tags:
+        - User
+      summary: "For Login"
+      description: Operation to Login
+      operationId: login
+      requestBody:
+        description: Login
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: mdikram88
+                password:
+                  type: string
+                  example: '12345678'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Login successful","user_id": 1}'
+        '403':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Incorrect password!"}'
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: >-
+                    {"message": "The Username you entered isn't connected to an
+                    account."}
+  /api/signup:
+    description: End Point for Signup
+    post:
+      tags:
+        - User
+      summary: For SignUp
+      description: Operation to Sign up
+      operationId: signup
+      requestBody:
+        description: SignUp
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: mdikram88
+                email:
+                  type: string
+                  example: abcd231@gmail.com
+                password:
+                  type: string
+                  example: '12345678'
+                name:
+                  type: string
+                  example: Mohd Ikram
+                reset_code:
+                  type: string
+                  example: aaaa1111
+                roll_no:
+                  type: string
+                  example: 21f282319
+                dual_degree:
+                  type: boolean
+                  example: true
+                side_work:
+                  type: boolean
+                  example: false
+                additional_education:
+                  type: string
+                  example: B.tech
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Account created successfully"}'
+        '400':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something Went Wrong"}'
+        '403':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: >-
+                    {"message": "The username you entered is already connected
+                    to an account."}
+                Example 2:
+                  value: >-
+                    {"message": "The email address you entered is already
+                    connected to an account."}
+                Example 3:
+                  value: >-
+                    {"message": "The roll_no you entered is already connected to
+                    an account."}
+  /api/forget_password:
+    description: End Point for Forget Password
+    post:
+      tags:
+        - User
+      summary: For Forget Password
+      description: Operation to Forget Password
+      operationId: forget_password
+      requestBody:
+        description: Forget Password
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: mdikram88
+                reset_code:
+                  type: string
+                  example: aaaa1111
+                password:
+                  type: string
+                  example: '12345678'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Password Reset Successfully"}'
+        '403':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "The reset code you entered is incorrect."}'
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Account doesn''t exist"}'
+  /api/student/approve:
+    description: End Point for Approve User
+    put:
+      tags:
+        - Admin
+      summary: For approving new students
+      description: Operation to Approve User
+      operationId: approve_user
+      requestBody:
+        description: Approve User
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  example: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "User approved"}'
+        '400':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something went wrong"}'
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "invalid user_id"}'
+  /api/profile:
+    description: End Point for User
+    post:
+      tags:
+        - User
+      summary: For creating new User
+      description: Operation to Create new User Profile
+      operationId: CreateUser
+      requestBody:
+        description: SignUp
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: mdikram88
+                email:
+                  type: string
+                  example: abcd231@gmail.com
+                password:
+                  type: string
+                  example: '12345678'
+                name:
+                  type: string
+                  example: Mohd Ikram
+                reset_code:
+                  type: string
+                  example: aaaa1111
+                roll_no:
+                  type: string
+                  example: 21f282319
+                dual_degree:
+                  type: boolean
+                  example: true
+                side_work:
+                  type: boolean
+                  example: false
+                additional_education:
+                  type: string
+                  example: B.tech
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Account created successfully"}'
+        '400':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something Went Wrong"}'
+        '403':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: >-
+                    {"message": "The username you entered is already connected
+                    to an account."}
+                Example 2:
+                  value: >-
+                    {"message": "The email address you entered is already
+                    connected to an account."}
+                Example 3:
+                  value: >-
+                    {"message": "The roll_no you entered is already connected to
+                    an account."}
+  /api/profile/{user_id}:
+    description: End point to read User and modify.
+    get:
+      tags:
+        - User
+      summary: For getting User data
+      description: Operation to get User details.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: >-
+                    { "data": { "dual_degree": false, "email": "abcd@gmail.com",
+                    "name": "M.Ikram", "password": "12345678", "reset_code":
+                    "12345678", "side_work": false, "user_id": 1, "username":
+                    "mdikram88", "verified": true } }
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid user_id"}'
+    put:
+      tags:
+        - User
+      summary: For Updating User data
+      description: Operation to Update User details.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Update User profile
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: mdikram88
+                email:
+                  type: string
+                  example: abcd231@gmail.com
+                password:
+                  type: string
+                  example: '12345678'
+                name:
+                  type: string
+                  example: Mohd Ikram
+                reset_code:
+                  type: string
+                  example: aaaa1111
+                dual_degree:
+                  type: boolean
+                  example: true
+                side_work:
+                  type: boolean
+                  example: false
+                additional_education:
+                  type: string
+                  example: B.tech
+      responses:
+        '202':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Profile updated successfully"}'
+        '400':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid User Id"}'
+                Example 2:
+                  value: '{"message": "Email is already taken, please try another"}'
+        '500':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something Went Wrong"}'
+  /api/course/{id}:
+    description: End point to read a Course.
+    get:
+      tags:
+        - Course
+      summary: For Getting Course data
+      description: Operation to get Course details.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: |-
+                    {
+                        "data": {
+                            "code": "CS001214",
+                            "course_id": 1,
+                            "course_type": "Diploma in Programming",
+                            "description": "bla bla bla",
+                            "duration": "12 weeks",
+                            "is_active": true,
+                            "level": "1",
+                            "name": "Java",
+                            "professor": "Someone"
+                        }
+                    }
+        '404':
+          description: Invalid Course Id
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid Course id"}'
+    put:
+      tags:
+        - Course
+      summary: For updating Course data
+      description: Operation to update Course Details.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Tools for Data Science
+                code:
+                  type: string
+                  example: CS200123
+                duration:
+                  type: string
+                  example: 12 Weeks
+                professor:
+                  type: string
+                  example: M.K
+                course_type:
+                  type: string
+                  example: Diploma in Data Science
+                level:
+                  type: string
+                  example: '2'
+                description:
+                  type: string
+                  example: Something bla bla
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Course Updated Successfully"}'
+        '400':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Course Code is already taken"}'
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid Course id"}'
+    delete:
+      tags:
+        - Course
+      summary: For deleting Course data
+      description: Operation to delete a Course.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Course deleted Successfully"}'
+        '404':
+          description: Invalid Course Id
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid Course id"}'
+        '500':
+          description: Invalid Course Id
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something went wrong"}'
+  /api/course:
+    description: End point to create a Course.
+    post:
+      tags:
+        - Course
+      summary: For creating new Course
+      description: Operation to create a Course.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: Tools for Data Science
+                code:
+                  type: string
+                  example: CS2100123
+                duration:
+                  type: string
+                  example: 8 Weeks
+                professor:
+                  type: string
+                  example: M.K
+                course_type:
+                  type: string
+                  example: Diploma in Data Science
+                level:
+                  type: string
+                  example: '2'
+                description:
+                  type: string
+                  example: something something
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Course Added Successfully"}'
+        '400':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Course Code is already taken"}'
+                Example 2:
+                  value: '{"message": "Course Name is already taken"}'
+        '500':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something went wrong"}'
+  /api/courses/student/{user_id}:
+    get:
+      tags:
+        - Course
+      summary: For getting courses details for the student
+      description: Operation to get User Course details.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value:
+                    Enrolled:
+                      - - CS001214
+                        - 12 weeks
+                        - Someone
+                        - 4
+                        - 5
+                        - 1
+                        - Java
+                    Unenrolled:
+                      - - CS2001712
+                        - 8 Weeks
+                        - SLS
+                        - 4
+                        - 5
+                        - 2
+                        - System Commands
+                    username: M.Ikram
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "user_id is invalid"}'
+  /api/courses/student:
+    post:
+      tags:
+        - Course
+      summary: to get User Enrolled or unenrolled courses
+      description: Operation to get User Enrolled or unenrolled courses details.
+      requestBody:
+        description: get User enrolled or unenrolled courses
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  example: 1
+                enrollment_type:
+                  type: string
+                  example: enrolled
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: |-
+                    {
+                        "data": [
+                            {
+                                "code": "CS001214",
+                                "course_id": 1,
+                                "course_type": "Diploma in Programming",
+                                "description": "bla bla bla",
+                                "duration": "12 weeks",
+                                "is_active": true,
+                                "level": "1",
+                                "name": "Java",
+                                "professor": "Someone"
+                            }
+                        ]
+                    }
+        '400':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid enrollment_type"}'
+  /api/enrollments:
+    post:
+      tags:
+        - Enrollment
+      summary: For creating new enrollment
+      description: Operation to add enrollment.
+      requestBody:
+        description: Approve User
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                course_id:
+                  type: integer
+                  example: 1
+                user_id:
+                  type: integer
+                  example: 1
+                marks:
+                  type: integer
+                  example: 80
+                term:
+                  type: string
+                  example: Jan
+                year:
+                  type: integer
+                  example: 2023
+                study_hours:
+                  type: integer
+                  example: 20
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Enrollment Added Successfully"}'
+        '400':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: >-
+                    {"message": "Enrollment already exist for this user and
+                    course"}
+                Example 2:
+                  value: '{"message": "User is not verified"}'
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid user id"}'
+        '500':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something went wrong"}'
+  /api/enrollments/{enroll_id}:
+    get:
+      tags:
+        - Enrollment
+      summary: For getting enrollment details
+      description: Operation to get Enrollment details.
+      parameters:
+        - in: path
+          name: enroll_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      course_id: 1
+                      enrollment_id: 1
+                      marks: 90
+                      study_hour: 50
+                      term: Sept
+                      user_id: 1
+                      year: 2022
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "enroll_id is invalid"}'
+    put:
+      tags:
+        - Enrollment
+      summary: For updating enrollment details
+      description: Operation to update Enrollment Details.
+      parameters:
+        - in: path
+          name: enroll_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                marks:
+                  type: integer
+                  example: 80
+                term:
+                  type: string
+                  example: Jan
+                year:
+                  type: integer
+                  example: 2023
+                study_hours:
+                  type: integer
+                  example: 20
+      responses:
+        '202':
+          description: Success
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Enrollment Updated Successfully"}'
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Enrollment id is invalid"}'
+        '500':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something went wrong"}'
+    delete:
+      tags:
+        - Enrollment
+      summary: For deleting enrollment
+      description: Operation to delete a Enrollment.
+      parameters:
+        - in: path
+          name: enroll_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Enrollment deleted Successfully"}'
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "enrollment id is invalid"}'
+        '500':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something went wrong"}      '
+  /api/enrollments/student/{user_id}:
+    get:
+      tags:
+        - Enrollment
+      summary: To get Enrollments of the student
+      description: Operation to get Student Enrollment details.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      - course_id: 1
+                        enrollment_id: 1
+                        marks: 90
+                        study_hour: 50
+                        term: Sept
+                        user_id: 1
+                        year: 2022
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value:
+                    message: user_id is invalid
+  /api/enrollments/admin:
+    get:
+      tags:
+        - Admin
+      summary: To get all enrollments
+      description: Operation to get All Enrollments details.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      - course_id: 1
+                        enrollment_id: 1
+                        marks: 90
+                        study_hour: 50
+                        term: Sept
+                        user_id: 1
+                        year: 2022
+  /api/new_students:
+    get:
+      tags:
+        - Admin
+      summary: To get the new students of application
+      description: Operation to get new Students Profile details.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      - dual_degree: true
+                        email: abcxyz@gmail.com
+                        name: Rahul
+                        password: '12345678'
+                        reset_code: '12345678'
+                        side_work: true
+                        user_id: 3
+                        username: rahul765
+                        verified: false
+                      - dual_degree: false
+                        email: xyz@gmail.com
+                        name: Bimlesh
+                        password: '12345678'
+                        reset_code: '12345678'
+                        side_work: true
+                        user_id: 4
+                        username: bimlesh765
+                        verified: false
+  /api/review:
+    post:
+      tags:
+        - Review
+      summary: To create new review
+      description: Operation to add review.
+      requestBody:
+        description: Add Review
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                course_id:
+                  type: integer
+                  example: 1
+                user_id:
+                  type: integer
+                  example: 1
+                difficulty:
+                  type: integer
+                  example: 3
+                review:
+                  type: string
+                  example: bla bla bla
+                support:
+                  type: integer
+                  example: 2
+                rating:
+                  type: integer
+                  example: 2
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Review Added Successfully"}'
+        '400':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: >-
+                    {"message": "Can't give more than one review for each
+                    course"} course"}
+                Example 2:
+                  value: '{"message": "User has not enrolled for this course"}'
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid course_id"}'
+        '500':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something went wrong"}'
+  /api/review/{review_id}:
+    get:
+      tags:
+        - Review
+      summary: To get review data
+      description: Operation to get Review details.
+      parameters:
+        - in: path
+          name: review_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      course_id: 1
+                      course_name: Java
+                      difficulty: 5
+                      rating: 4
+                      review: blab blabalba
+                      review_id: 2
+                      support: 3
+                      user_id: 5
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid review_id"}'
+    put:
+      tags:
+        - Review
+      summary: To updating review data
+      description: Operation to update Review Details.
+      parameters:
+        - in: path
+          name: review_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                review_id:
+                  type: integer
+                  example: 2
+                difficulty:
+                  type: integer
+                  example: 4
+                support:
+                  type: integer
+                  example: 3
+                rating:
+                  type: integer
+                  example: 2
+                review:
+                  type: string
+                  example: Wonderful
+      responses:
+        '202':
+          description: Success
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Review Successfully Updated"}'
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid Review Id"}'
+        '500':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something went wrong"}'
+    delete:
+      tags:
+        - Review
+      summary: To delete review
+      description: Operation to delete a Review.
+      parameters:
+        - in: path
+          name: review_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Review Deleted Successfully"}'
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid Review Id"}'
+        '500':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something went wrong"}      '
+  /api/reviews/student/{user_id}:
+    get:
+      tags:
+        - Review
+      summary: To get reviews given by student
+      description: Operation to get Student's Reviews details.
+      parameters:
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      - course_id: 2
+                        course_name: System Commands
+                        difficulty: 5
+                        rating: 4
+                        review: blab blabalba
+                        review_id: 3
+                        support: 3
+                        user_id: 1
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid user_Id"}'
+  /api/admin_courses_list:
+    get:
+      tags:
+        - Admin
+      summary: To get list of all courses
+      description: Operation to get All Courses details.
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value:
+                    data:
+                      - avg_difficulty: 5
+                        avg_rating: 4
+                        code: CS001214
+                        course_id: 1
+                        course_type: Diploma in Programming
+                        description: bla bla bla
+                        duration: 12 weeks
+                        is_active: true
+                        level: '1'
+                        name: Java
+                        professor: Someone
+                        support: 3
+                      - avg_difficulty: 5
+                        avg_rating: 4
+                        code: CS2001712
+                        course_id: 2
+                        course_type: Diploma in Programming
+                        description: shitty subject
+                        duration: 8 Weeks
+                        is_active: true
+                        level: '3'
+                        name: System Commands
+                        professor: SLS
+                        support: 3
+  /api/export_data:
+    summary: ''
+    description: Complete data into excel workbook
+    get:
+      summary: Get all the data of application as excel workbook
+      description: ''
+      operationId: ''
+      tags:
+        - Admin
+      responses:
+        '200':
+          description: Downloads Excel Workbook
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+                example: file downloaded
+  /api/update_course_status:
+    summary: For switching course status
+    put:
+      summary: For updating course status
+      description: ''
+      operationId: ''
+      parameters:
+        - in: query
+          name: course_id
+          description: Give course id to switch it's status
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Status Updated Successfully"}'
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid Course Id"}'
+        '500':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something went wrong..."}'
+      tags:
+        - Admin
+  /api/admin_dashboard:
+    summary: For admin dashboard data
+    description: ''
+    get:
+      summary: For admin dashboard data
+      description: ''
+      operationId: ''
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: |-
+                    {
+                        "data": {
+                            "active_courses": 1,
+                            "active_enrollments": 0,
+                            "total_courses": 2,
+                            "total_students": 5
+                        }
+                    }
+        
+      tags:
+        - Admin
+        
+  /get_user_name/{user_id}:
+    summary: To get brief data about user
+    get:
+      summary: Get brief data of user
+      description: ''
+      operationId: ''
+      parameters:
+        - in: path
+          name: user_id
+          description: ''
+          required: true
+          schema:
+            type: integer
+      tags:
+        - Additionals
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: |-
+                    {
+                        "data": {
+                            "levels": [
+                                "1",
+                                "3"
+                            ],
+                            "name": "Mohd Ikram",
+                            "user_id": 1
+                        }
+                    }
+        '404':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Invalid User Id"}'
+                  
+  /api/course_recommender:
+    
+    post:
+      tags:
+        - Additionals
+      summary: Gives recommended courses
+      description: Operation to get recommended courses.
+      requestBody:
+        description: Course Recommender
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+          
+                user_id:
+                  type: integer
+                  example: 1
+          
+                no_of_courses:
+                  type: integer
+                  example: 1
+          
+                study_hour:
+                  type: integer
+                  example: 20
+          
+                level:
+                  type: integer
+                  example: 2
+                  
+      responses:
+        '201':
+          description: Success
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: {
+                              "data": [
+                                  {
+                                      "course_name": "Java",
+                                      "estimated_marks": 90.0
+                                  }
+                              ]
+                          }
+  
+        '500':
+          description: ''
+          content:
+            application/json:
+              examples:
+                Example 1:
+                  value: '{"message": "Something went wrong"}'

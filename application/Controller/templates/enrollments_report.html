@@ -1,0 +1,98 @@
+{% extends 'header and footer.html' %}
+
+{% block nav_content %}
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav">
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/courses/student/{{data.user_id}}">Home</a>
+        </li>
+      {% else %}
+          <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/{{user_id}}/admin_dashboard">Home</a>
+        </li>
+      {% endif %}
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/course_recommender">Course Recommender</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/new_students/admin">New Students</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/student/enrollments">Enrollments</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/enrollments/admin">Enrollments</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/reviews/student">Reviews</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/admin_courses_list">Courses</a>
+        </li>
+      {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="/view_profile/{{data.user_id}}">Profile</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">LogOut</a>
+        </li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block main_content %}
+
+<div class="row">
+    <h3>Enrollements Report</h3>
+    {% if success %}
+        <h2 class="text-success text-center">Successfully added all enrollments</h2>
+        <br>
+        <br>
+    {% else %}
+        <br>
+        <br>
+
+    <div class="row">
+        <h5 class="text-danger text-center">Some faulty records while adding enrollment</h5>
+        <br>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr class="table-danger">
+                    <th>S.no</th>
+                    <th class="col-2"> username </th>
+                    <th class="col-3"> email </th>
+                    <th class="col-6"> Status </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                    <tr>
+                        <td>{{loop.index}}</td>
+                        <td class="col-2"> {{ record.username }}</td>
+                        <td class="col-3"> {{ record.email }}</td>
+                        <td class="col-6"> {{ record.message }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends 'header and footer.html' %}
+
+{% block nav_content%}
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav">
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/courses/student/{{data.user_id}}">Home</a>
+        </li>
+      {% else %}
+          <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/{{user_id}}/admin_dashboard">Home</a>
+        </li>
+      {% endif %}
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/course_recommender">Course Recommender</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/new_students/admin">New Students</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/student/enrollments">Enrollments</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/enrollments/admin">Enrollments</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link active" href="/{{data.user_id}}/reviews/student">Reviews</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/admin_courses_list">Courses</a>
+        </li>
+      {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="/view_profile/{{data.user_id}}">Profile</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">LogOut</a>
+        </li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block main_content %}
+<div class="row">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      {% for message in messages %}
+  <span style="color:red;"><strong><em>{{ message }}</em></strong></span>
+      {% endfor %}
+    {% endif %}
+ {% endwith %}
+</div>
+{% if reviews | length > 0 %}
+<div class="row">
+    <br>
+    <br>
+  <ul class="list-group">
+            {%for review in reviews%}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <br>
+                <div class="col col-md-6">
+                    <h4><a href="/{{user_id}}/view_review/{{review.review_id}}">{{review.course_name}}</a></h4>
+                    <br>
+                    <span class="fw-bold">Difficulty      : </span>{{ review.difficulty }}<br>
+                    <span class="fw-bold">Rating  : </span>{{ review.rating }}<br>
+                    <span class="fw-bold">Support : </span>{{ review.support }}
+                </div>
+                <div class="col col-md-2 text-center">
+                  <a href="/{{user_id}}/edit_review/{{review.review_id}}"><i class="bi bi-pencil-square text-warning" style="font-size: 1.4em;"></i></a><br>
+                  <br>
+                  <a href="/{{user_id}}/delete_review/{{review.review_id}}"><i class="bi bi-trash3-fill text-danger" style="font-size: 1.4em;"></i></a>
+                    <br>
+                </div>
+              <div class="col col-md-4">
+                  <span style="font-weight:bold">Review - <span>
+                    <textarea class="form-control" rows="4" cols="15" disabled>{{review.review}}</textarea>
+                  </span></span><br>
+              </div>
+
+                <br><br><br><br><br><br><br>
+            </li>
+            {%endfor%}
+        </ul>
+
+</div>
+{% else %}
+<br>
+<br>
+<br>
+<h3 class="text-success text-center">No Reviews</h3>
+{% endif %}
+  <br>
+  <br>
+  <br>
+{% endblock %}

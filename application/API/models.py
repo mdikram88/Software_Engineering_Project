@@ -41,6 +41,7 @@ class Users(db.Model):
             "username": self.username,
             "email": self.email,
             "password": self.password,
+            "roll_no": self.roll_no,
             "reset_code": self.reset_code,
             "dual_degree": self.dual_degree,
             "side_work": self.side_work,

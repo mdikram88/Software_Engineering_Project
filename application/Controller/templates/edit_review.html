@@ -1,0 +1,148 @@
+{% extends 'header and footer.html' %}
+
+{% block nav_content%}
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav">
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/courses/student/{{data.user_id}}">Home</a>
+        </li>
+      {% else %}
+          <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/{{user_id}}/admin_dashboard">Home</a>
+        </li>
+      {% endif %}
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/course_recommender">Course Recommender</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/new_students/admin">New Students</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/student/enrollments">Enrollments</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/enrollments/admin">Enrollments</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/reviews/student">Reviews</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/admin_courses_list">Courses</a>
+        </li>
+      {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="/view_profile/{{data.user_id}}">Profile</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">LogOut</a>
+        </li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block main_content %}
+<br>
+    <div class="container text-left">
+        <h4>Edit Review Page</h4>
+        <div class="row">
+            <div class="col bg-white pe-5">
+                <form action="/{{user_id}}/edit_review/{{data.review_id}}" method="post">
+                  <div class="row">
+                      {% with messages = get_flashed_messages() %}
+                          {% if messages %}
+                            {% for message in messages %}
+                        <span style="color:red;"><strong><em>{{ message }}</em></strong></span>
+                            {% endfor %}
+                          {% endif %}
+                      {% endwith %}
+                    <div class="col">
+                        <br>
+                        <label class="form-label"><b>Course Name: </b> </label>
+                        <input type=text class="form-control" value="{{data.course_name}}" disabled>
+                      </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col">
+                        <label class="form-label"><b>Rating: </b></label>
+                        <select name="rating" class="form-select">
+                            <option value="1" {% if data.rating == 1 %} selected {%endif%}>1</option>
+                            <option value="2" {% if data.rating == 2 %} selected {%endif%}>2</option>
+                            <option value="3" {% if data.rating == 3 %} selected {%endif%}>3</option>
+                            <option value="4" {% if data.rating == 4 %} selected {%endif%}>4</option>
+                            <option value="5" {% if data.rating == 5 %} selected {%endif%}>5</option>
+                        </select>
+                      </div>
+                      <div class="col">
+                        <label class="form-label"><b>Difficulty: </b> </label>
+                          <select name="difficulty" class="form-select">
+                            <option value="1" {% if data.difficulty == 1 %} selected {%endif%}>1</option>
+                            <option value="2" {% if data.difficulty == 2 %} selected {%endif%}>2</option>
+                            <option value="3" {% if data.difficulty == 3 %} selected {%endif%}>3</option>
+                            <option value="4" {% if data.difficulty == 4 %} selected {%endif%}>4</option>
+                            <option value="5" {% if data.difficulty == 5 %} selected {%endif%}>5</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col">
+                          <br>
+                        <label class="form-label"><b>Support: </b></label>
+                          <select name="support" class="form-select">
+                            <option value="1" {% if data.support == 1 %} selected {%endif%}>1</option>
+                            <option value="2" {% if data.support == 2 %} selected {%endif%}>2</option>
+                            <option value="3" {% if data.support == 3 %} selected {%endif%}>3</option>
+                            <option value="4" {% if data.support == 4 %} selected {%endif%}>4</option>
+                            <option value="5" {% if data.support == 5 %} selected {%endif%}>5</option>
+                        </select>
+                      </div>
+                  </div>
+                    <div class="row">
+                        <div class="col">
+                            <br>
+                            <label class="form-label"><b>Review: </b> </label>
+                            <br>
+                            <textarea name="review" class="form-control" rows="4" cols="50">{{data.review}}</textarea>
+                        </div>
+                    </div>
+                  <br>
+                    <div class="row">
+                        <div class="col col-md-5"></div>
+                        <div class="col col-md-2">
+                            <button type=submit class="btn btn-success">Update</button>
+                        </div>
+                        <div class="col col-md-5"></div>
+                        <br>
+                        <br><br>
+                    </div>
+            </form>
+            </div>
+            <div class="col">
+                <div class="card" style="width: 40rem;height: 30rem">
+                    <img src="/static/images/view_review.jpg" class="card-img-top" alt="..." height="80%">
+                    <div class="card-body">
+                      <h5 class="card-text">Welcome to <em><strong>View Review page</strong></em></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+<br><br>
+
+{% endblock %}

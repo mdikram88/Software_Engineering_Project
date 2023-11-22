@@ -1,0 +1,129 @@
+{% extends 'header and footer.html' %}
+
+{% block nav_content%}
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav">
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/courses/student/{{data.user_id}}">Home</a>
+        </li>
+      {% else %}
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/{{user_id}}/admin_dashboard">Home</a>
+        </li>
+      {% endif %}
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/course_recommender">Course Recommender</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/new_students/admin">New Students</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/student/enrollments">Enrollments</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/enrollments/admin">Enrollments</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/reviews/student">Reviews</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/admin_courses_list">Courses</a>
+        </li>
+      {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="/view_profile/{{data.user_id}}">Profile</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">LogOut</a>
+        </li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block main_content %}
+    <br>
+    <div class="row">
+        <h2>Admin Dashboard</h2>
+    </div>
+    <div class="bg-white">
+      <br>
+      <div class="row">
+          <div class="col col-md-10"></div>
+          <div class="col col-md-2 text-end">
+              <h5 class="text-success">
+                  <a href="/{{user_id}}/add_course"><i class="bi bi-plus-circle" style="font-size: 1.4em;text-decoration: none; color: green;"></i></a>
+                  <a href="/{{user_id}}/add_course" style="text-decoration: none;color: green;">Add Course  &nbsp;&nbsp;</a></h5>
+          </div>
+      </div>
+      <hr>
+      <div class="row text-center text-dark">
+        <div class="col col-3">
+          <h5>Total Students</h5>
+          <strong> {{ data.total_students }} </strong>
+        </div>
+        <div class="col col-3">
+          <h5>Total Courses</h5>
+          <strong> {{ data.total_courses}} </strong>
+        </div>
+        <div class="col col-3">
+          <h5>Active Courses</h5>
+          <strong> {{ data.active_courses }} </strong>
+        </div>
+        <div class="col col-3">
+          <h5>Active Enrollments</h5>
+          <strong> {{ data.active_enrollments }} </strong>
+        </div>
+      </div>
+      <hr>
+      <br>
+
+      <div class="row text-center">
+        <div class="col col-md-6">
+          <img src="/static/images/chart1.jpg" alt="Chart for student">
+          <br>
+          <strong>Students per course</strong>
+        </div>
+
+        <div class="col col-md-6">
+          <img src="/static/images/chart2.jpg" alt="Chart for Courses" height="600em;" width="500em">
+          <br>
+          <strong> Courses Per level</strong>
+        </div>
+      </div>
+      <br>
+      <hr>
+      <br>
+      <div class="row">
+        <div class="col col-md-6 text-center">
+          <img src="/static/images/chart3.jpg" alt="Chart for Enrollments" height="600em;" width="500em">
+          <br>
+          <strong> Enrollments Over term</strong>
+        </div>
+        <div class="col col-md-6 text-center">
+          <img src="/static/images/chart4.jpg" alt="Chart for Reviews" style="position: relative; right:75px;">
+          <br>
+          <strong> Reviews Distribution by Courses</strong>
+        </div>
+      </div>
+      <br>
+      <br><br><br><br><br><br>
+    </div>
+    <br><br><br><br><br><br><br>
+
+{% endblock %}
+

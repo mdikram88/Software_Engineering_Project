@@ -1,0 +1,109 @@
+{% extends 'header and footer.html' %}
+
+
+{% block nav_content%}
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav">
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/courses/student/{{data.user_id}}">Home</a>
+        </li>
+      {% else %}
+          <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/{{user_id}}/admin_dashboard">Home</a>
+        </li>
+      {% endif %}
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link active" href="/{{data.user_id}}/course_recommender">Course Recommender</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link active" href="/{{data.user_id}}/new_students/admin">New Students</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/student/enrollments">Enrollments</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/enrollments/admin">Enrollments</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/reviews/student">Reviews</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/admin_courses_list">Courses</a>
+        </li>
+      {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="/view_profile/{{data.user_id}}">Profile</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">LogOut</a>
+        </li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block main_content %}
+    <br>
+    <h2>Student Dashboard</h2>
+    <br>
+    <div>
+        <strong>COMPLETED COURSES</strong>
+        {% if data.Enrolled | length == 0%}
+        <h4 class="text-center text-warning bg-white"> No courses have been completed, Please add enrollment for the completed course</h4>
+        {% else %}
+        <ul class="list-group">
+            {%for i in range(0,data.Enrolled|length)%}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="ms-2 me-auto">
+
+                  <a href="/{{user_id}}/course/{{data.Enrolled[i][5]}}">{{data.Enrolled[i][6]}}</a><br><br>
+                    <span class="fw-bold">Code      : </span>{{data.Enrolled[i][1]}}<br>
+                    <span class="fw-bold">Duration  : </span>{{data.Enrolled[i][2]}}<br>
+                    <span class="fw-bold">Professor : </span>{{data.Enrolled[i][3]}}
+                </div>
+                <span>
+                    <span style="font-weight:bold">Average Rating - <span class="badge bg-primary rounded-pill">{{data.Enrolled[i][3]}}</span></span><br>
+                    <span style="font-weight:bold">Average Diffic&nbsp;&nbsp; - <span class="badge bg-primary rounded-pill">{{data.Enrolled[i][4]}}</span></span><br><br>
+                    <a href="/{{user_id}}/add_review/{{data.Enrolled[i][5]}}" class="btn btn-primary btn-sm">Add Review</a>
+                </span>
+            </li>
+            {%endfor%}
+        </ul>
+        {% endif %}
+    </div>
+    <br><br><br>
+    <div>
+        <strong>PENDING COURSES</strong>
+        <ul class="list-group">
+            {%for i in range(0,data.Unenrolled|length)%}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="ms-2 me-auto">
+                    <a href="/{{user_id}}/course/{{data.Unenrolled[i][5]}}">{{data.Unenrolled[i][6]}}</a><br><br>
+                    <span class="fw-bold">Code      : </span>{{data.Unenrolled[i][0]}}<br>
+                    <span class="fw-bold">Duration  : </span>{{data.Unenrolled[i][1]}}<br>
+                    <span class="fw-bold">Professor : </span>{{data.Unenrolled[i][2]}}
+                </div>
+                <span>
+                    <span style="font-weight:bold">Average Rating - <span class="badge bg-primary rounded-pill">{{data.Unenrolled[i][3]}}</span></span><br>
+                    <span style="font-weight:bold">Average Diffic&nbsp;&nbsp; - <span class="badge bg-primary rounded-pill">{{data.Unenrolled[i][4]}}</span></span>
+                </span>
+            </li>
+            {%endfor%}
+        </ul>
+    </div>
+    <br><br><br><br><br><br><br><br>
+{% endblock %}

@@ -4,6 +4,8 @@ from flask_restful import Resource
 from application.API.models import *
 from application.API.additional_functions_2 import validate_enroll_data, validate_update_enroll_data
 from application.API.user_api import api
+import pandas as pd
+import json
 
 
 # ------------------------- Student's Enrollment list API -------------------
@@ -18,7 +20,9 @@ def student_enrollments(user_id):
     enrollments = []
 
     for enroll in user.enrollments:
-        enrollments.append(enroll.get_dictionary())
+        d = enroll.get_dictionary()
+        d["course_name"] = enroll.enroll_course.name
+        enrollments.append(d)
 
     return make_response(jsonify({"data": enrollments}), 200)
 
@@ -26,11 +30,18 @@ def student_enrollments(user_id):
 # ------------------------- All Enrollment List API ------------------
 @app.route("/api/enrollments/admin", methods=["GET"])
 def all_enrollments():
+    """API Function for getting all enrollments"""
+
+    # Querying all enrollments
     enrollments = Enrollments.query.all()
     enrollments_list = []
 
+    # Preparing data for sending
     for enrollment in enrollments:
-        enrollments_list.append(enrollment.get_dictionary())
+        d = enrollment.get_dictionary()
+        d["course_name"] = enrollment.enroll_course.name
+        d["user_name"] = enrollment.enroll_student.name
+        enrollments_list.append(d)
 
     return make_response(jsonify({"data": enrollments_list}), 200)
 

@@ -1,0 +1,123 @@
+{% extends 'header and footer.html' %}
+
+{% block nav_content%}
+
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav">
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/courses/student/{{data.user_id}}">Home</a>
+        </li>
+      {% else %}
+          <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/{{user_id}}/admin_dashboard">Home</a>
+        </li>
+      {% endif %}
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/course_recommender">Course Recommender</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/new_students/admin">New Students</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/student/enrollments">Enrollments</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/enrollments/admin">Enrollments</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/reviews/student">Reviews</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/admin_courses_list">Courses</a>
+        </li>
+      {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="/view_profile/{{data.user_id}}">Profile</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">LogOut</a>
+        </li>
+  </ul>
+</div>
+{% endblock %}
+
+{% block main_content %}
+<br><br><br>
+    <div class="container text-left">
+        <div class="row">
+            <div class="col">
+                <div class="card" style="height: 77%">
+                    <img src="/static/images/add_course.jpg" class="card-img-top" alt="..." height="80%">
+                    <div class="card-body">
+                      <h5 class="card-text">Welcome to <em><strong>Add Course page</strong></em> – where you can bring new courses to life for our eager students!</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <form action="/{{data.user_id}}/add_course" method="POST">
+                  <div class="row">
+                    <div class="col">
+                        <label for="course_name" class="form-label"><b>NAME</b></label>
+                        <input type="text" class="form-control" name="name" id="course_name" placeholder="Course Name" required>
+                      </div>
+                      <div class="col">
+                        <label for="course_code" class="form-label"><b>CODE</b></label>
+                        <input type="text" class="form-control" name="code" id="course_code" placeholder="Course Code" required>
+                      </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col">
+                        <label for="course_type" class="form-label"><b>COURSE TYPE</b></label>
+                        <input type="text" class="form-control" name="type" id="course_type" placeholder="Course Type" required>
+                      </div>
+                      <div class="col">
+                        <label for="course_duration" class="form-label"><b>DURATION</b></label>
+                        <select name="duration" id="course_duration" class="form-select" required>
+                          <option selected>Choose...</option>
+                          <option>4 weeks</option>
+                          <option>8 weeks</option>
+                          <option>12 weeks</option>                        
+                        </select>
+                        <!-- <input type="text" class="form-control" id="code" placeholder="Duration"> -->
+                      </div>
+                  </div>
+                  <br>
+                  <div class="row">
+                    <div class="col">
+                        <label for="course_professor" class="form-label"><b>PROFESSOR</b></label>
+                        <input type="text" class="form-control" name="professor" id="course_professor" placeholder="Professor" required>
+                      </div>
+                      <div class="col">
+                        <label for="course_level" class="form-label"><b>COURSE LEVEL</b></label>
+                        <input type="text" class="form-control" name="level" id="course_level" placeholder="Course Level" required>
+                      </div>
+                  </div>            
+                  <br>      
+                  <div class="mb-3">
+                    <label for="course_description" class="form-label"><b>DESCRIPTION</b></label>
+                    <textarea type="text" class="form-control" name="description" id="course_description" style="height: 7rem;" placeholder="Description" required></textarea>
+                  </div>
+                  <span><button type="submit" class="btn btn-primary btn-sm">Add Course</button>
+                      <a href="/{{user_id}}/admin_courses_list" class="btn btn-primary btn-sm">Cancel</a></span>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

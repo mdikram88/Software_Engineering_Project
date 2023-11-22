@@ -147,21 +147,26 @@ def approve_student():
     if not user:
         return make_response(jsonify({"message": "invalid user_id"}), 404)
 
+    print(user.verified)
     try:
         # trying to make changes and save
         user.verified = True
         db.session.commit()
+        print(user.verified)
         return make_response(jsonify({"message": "User approved"}), 200)
 
     except:
         # reverting to last save in case of failure
         db.session.rollback()
-        return make_response(jsonify({"message": "Something went wrong"}), 400)
+        return make_response(jsonify({"message": "Something went wrong"}), 500)
 
 
 # ---------------------- New Student List API ---------------------------
 @app.route("/api/new_students", methods=["GET"])
 def new_students():
+    """API Functionality for getting new students list"""
+
+    # Querying all new students
     students = Users.query.filter_by(verified=False).all()
     students_list = []
     for student in students:

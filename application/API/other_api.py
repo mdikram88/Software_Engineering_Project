@@ -230,5 +230,100 @@ def course_recommender():
         # In case of failure , passing appropriate messages
         return make_response(jsonify({"data": "Something went wrong"}), 500)
 
-# ----------------------Add Bulk Enrollment API ----------------------
+
+# ------------------------Add Bulk Enrollments API----------------
+@app.route("/api/add_bulk_enrollments", methods=["POST"])
+def add_bulk_enrollments():
+    """API Function for adding bulk enrollments using csv or excel file"""
+
+    # Checking if file is passed
+    if 'file' not in request.files:
+        return make_response(jsonify({'message': 'No file part'}), 404)
+
+    uploaded_file = request.files['file']
+
+    # Checking if file is empty
+    if uploaded_file.filename == '':
+        return make_response(jsonify({'message': 'No selected file'}), 404)
+
+    # Assuming the file is either CSV or Excel
+    if uploaded_file.filename.endswith('.csv'):
+        df = pd.read_csv(uploaded_file)
+
+    elif uploaded_file.filename.endswith(('.xls', '.xlsx')):
+        df = pd.read_excel(uploaded_file)
+
+    # If not csv or excel file then sending format error
+    else:
+        return make_response(jsonify({"message": "Unsupported file format"}), 400)
+
+    # Checking if all required columns are present in file
+    required_columns = ["course_name", "username", "email", "marks", "term", "year", "study_hours"]
+
+    # If all columns aren't present then finding missing column names and sending message
+    if not all(column in df.columns for column in required_columns):
+        missing_columns = [column for column in required_columns if column not in df.columns]
+        return make_response(jsonify({"message": f"The Following Columns are missing: {missing_columns}"}), 404)
+
+    # iterating over file data
+    errors = []
+    for index, row in df.iterrows():
+        # Convert the row to a JSON object
+        json_data = json.loads(row.to_json())
+
+        # Checking if course exists for the course name
+        c = Courses.query.filter_by(name=json_data["course_name"]).first()
+        if c is not None:
+            json_data["course_id"] = c.course_id
+
+        else:
+            # If not existing then skipping record and keeping a track of issue
+            d = {"username": json_data["username"], "email": json_data["email"], "message": "Course name is invalid"}
+            errors.append(d)
+            continue
+
+        # Checking if user exists for the username
+        u = Users.query.filter_by(email=json_data["email"], username=json_data["username"]).first()
+        if u is not None:
+            json_data["user_id"] = u.user_id
+        else:
+            # If not existing then skipping record and keeping a track of the issue
+            d = {"username": json_data["username"], "email": json_data["email"],
+                 "message": "Either username/email is/are invalid or are not of same account"}
+
+            errors.append(d)
+            continue
+
+        # Checking an enrollment exist for the user and course given in file
+        enroll = Enrollments.query.filter_by(user_id=json_data["user_id"], course_id=json_data["course_id"]).first()
+
+        # If exists then skipping record and keeping track of issue
+        if enroll:
+            d = {"username": json_data["username"], "email": json_data["email"],
+                 "message": "Already Exists!"}
+            errors.append(d)
+            continue
+
+        try:
+            # Making Enrollment Object and trying to add and save database
+            enroll = Enrollments(course_id=json_data["course_id"], user_id=json_data["user_id"], term=json_data["term"],
+                                 year=json_data["year"], marks=json_data["marks"], study_hours=json_data["study_hours"])
+
+            db.session.add(enroll)
+            db.session.commit()
+
+        except:
+            # In case of failure, storing the issue
+            d = {"username": json_data["username"], "email": json_data["email"],
+                 "message": "Something went wrong!!"}
+            errors.append(d)
+
+    # If there are any errors then sending errors list
+    if len(errors) > 0:
+        return make_response(jsonify({"data": errors}), 400)
+
+    # If everything is perfect then sending success message
+    return make_response(jsonify({"message": "Successfully added all"}), 200)
+
+
 

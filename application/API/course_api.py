@@ -13,6 +13,7 @@ from application.API.user_api import api
 @app.route("/api/courses/student", methods=["POST"])
 def student_courses():
     data = request.get_json()
+
     student = Users.query.get(data["user_id"])
     if data["enrollment_type"].lower() == "enrolled":
         enrolled_courses = get_enrolled_courses(student)
@@ -29,7 +30,7 @@ def student_courses():
 
 # -------------------------------Student Courses List API ---------------------------
 
-@app.route("/api/courses/student/<user_id>", methods=["GET"])
+@app.route("/api/courses/student/<int:user_id>", methods=["GET"])
 def course_list(user_id):
     """API Function for getting student courses list"""
 

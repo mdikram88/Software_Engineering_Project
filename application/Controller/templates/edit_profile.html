@@ -1,4 +1,61 @@
 {% extends 'header and footer.html' %}
+
+{% block nav_content %}
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+  <ul class="navbar-nav">
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/courses/student/{{data.user_id}}">Home</a>
+        </li>
+      {% else %}
+          <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/{{user_id}}/admin_dashboard">Home</a>
+        </li>
+      {% endif %}
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/course_recommender">Course Recommender</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/new_students/admin">New Students</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/student/enrollments">Enrollments</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/enrollments/admin">Enrollments</a>
+        </li>
+      {% endif %}
+
+      {% if not admin %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/reviews/student">Reviews</a>
+        </li>
+      {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="/{{data.user_id}}/admin_courses_list">Courses</a>
+        </li>
+      {% endif %}
+        <li class="nav-item">
+          <a class="nav-link" href="/view_profile/{{data.user_id}}">Profile</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="/">LogOut</a>
+        </li>
+  </ul>
+</div>
+{% endblock %}
+
+
 {% block main_content %}
 
     <div class="row">
@@ -14,7 +71,8 @@
 <!-- md is for space(medium)after border,ranges from 1 to 6, if you want 2 col, 12/2, if 3 cols, 12/3-->
 
           <form action="/edit_profile/{{data.user_id}}" method="post" enctype=>
-           <br>
+              <br>
+              <h2><em><strong>Edit Profile Page for {{data.name}}</strong></em></h2>
            {% with messages = get_flashed_messages() %}
               {% if messages %}
                 {% for message in messages %}
@@ -23,7 +81,7 @@
               {% endif %}
            {% endwith %}
            
-            <h2><em><strong>Edit Profile Page for {{data.name}}</strong></em></h2>
+
             
             <div class="form-group"> 
                 <label >Name </label>
@@ -45,46 +103,54 @@
             <label>Reset</label>
             <input name="reset_code" type="text" class="form-control" placeholder="enter your reset code" value="{{data.reset_code}}">
           </div>
+          <div class="row">
+              <div class="col-md-6">
+                <br>
+                <label >Dual Degree</label>
+                    <p>
+                        {% if data.dual_degree== 0 %}
+                            <label for="No">No</label>
+                            <input type="radio" name="dual_degree" id="No" value="false" checked required>
+                            <label for="Yes">Yes</label>
+                            <input type="radio" name="dual_degree" id="Yes" value="true">
+                        {% else %}
+                            <label for="No1">No</label>
+                            <input type="radio" name="dual_degree" id="No1" value="false" required>
+                            <label for="Yes1">Yes</label>
+                            <input type="radio" name="dual_degree" id="Yes1" value="true" checked>
+                        {% endif %}
+                    </p>
+              </div>
 
-          <div >
-            <label >Dual Degree</label>
-                <p>
-                    {% if data.dual_degree== 0 %}
-                        <input type="radio" name="dual_degree" value="False" checked>No</input>
-                        <input type="radio" name="dual_degree" value="True">Yes</input>
+              <div class="col-md-6">
+                  <br>
+                <label >Side Work</label>
+                    <p>
+                    {% if data.side_work== 0 %}
+                        <label for="No2">No</label>
+                      <input type="radio" name="side_work" id="No2" value="false" checked required>
+                       <label for="Yes2">Yes</label>
+                      <input type="radio" name="side_work" id="Yes2" value="true">
                     {% else %}
-                    <input type="radio" name="dual_degree" value="False">No</input>
-                    <input type="radio" name="dual_degree" value="True" checked>Yes</input>
+                        <label for="No3">No</label>
+                        <input type="radio" name="side_work" id="No3" value="false" required>
+                        <label for="Yes3">Yes</label>
+                        <input type="radio" name="side_work" id="Yes3" value="true" checked>
                     {% endif %}
-                </p>
+                    </p>
           </div>
 
-          <div >
-            <label >Side Work</label>
-                <p> 
-                {% if data.side_work== 0 %}
-                  <input type="radio" name="side_work" value="False" checked>No</input> 
-                  <input type="radio" name="side_work" value="True">Yes</input>
-                {% else %}
-                  <input type="radio" name="side_work" value="False">No</input> 
-                  <input type="radio" name="side_work" value="True" checked>Yes</input>
-                {% endif %}
-                </p>
           </div>
-
-
           <div class="form-group">
             <label>Additional Education</label>
             <input name="additional_education" type="text" class="form-control" placeholder="enter any additional Education" value="{{data.additional_education}}">
          </div>
          
          <br>
-          <button type="submit" class="btn btn-primary">Edit Profile</button>
+          <button type="submit" class="btn btn-primary">Update Profile</button>
               <br>
               <br>
-
        </form>
-        
         </div>
     </div>
 </div>

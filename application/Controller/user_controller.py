@@ -28,7 +28,7 @@ def login():
 
             # Checking if user is an admin or student
             if data["user_id"] in ADMINS:
-                return redirect(f"/admin")
+                return redirect(f"/{data['user_id']}/admin_dashboard")
             return redirect(f"/courses/student/{data['user_id']}")
         else:
             # In case of failure of verification giving appropriate message
@@ -36,7 +36,7 @@ def login():
             flash(data["message"])
             return redirect(url_for("login"))
 
-    return render_template("login.html",page_title="Login Page")
+    return render_template("login.html", page_title="Login Page")
 
 
 # Controller for Sign up
@@ -115,7 +115,9 @@ def view_profile(user_id):
     # If response will be success
     if resp.status_code == 200:
         json_data = resp.json()
-        return render_template("view_profile.html", data=json_data["data"], page_title="View Profile")
+        if json_data["data"]["user_id"] in ADMINS:
+            return render_template("view_profile.html", data=json_data["data"], page_title="View Profile", admin=True)
+        return render_template("view_profile.html", data=json_data["data"], page_title="View Profile", admin=False)
 
     # In case of failure
     data = resp.json()
@@ -127,11 +129,15 @@ def view_profile(user_id):
 def edit_profile(user_id):
     """Controller Function for handling edit profile functionality"""
 
+    # Hitting API to get details of the user
     resp = requests.get(f"http://127.0.0.1:5001/api/profile/{user_id}")
+
+    # In case of success and request type is 'GET' then rendering the template with the data
     if resp.status_code == 200:
         json_data = resp.json()
         data = json_data["data"]
 
+        # If it's post request then taking modified data
         if request.method == "POST":
             var_name = request.form['name']
             var_email = request.form['email']
@@ -141,6 +147,7 @@ def edit_profile(user_id):
             var_side_work = json.loads((request.form['side_work']).lower())
             var_additional_education = request.form['additional_education']
 
+            # Preparing it as json data and hitting API for modifying
             data = json.dumps({
                 "name": var_name,
                 "email": var_email,
@@ -154,10 +161,16 @@ def edit_profile(user_id):
 
             headers = {"Content-Type": "application/json"}
             response = requests.put(f"http://127.0.0.1:5001/api/profile/{user_id}", data=data, headers=headers)
+
+            # Taking response and flashing message
             msg = response.json()["message"]
             flash(msg)
+
+            # In case of success it will revert to view profile page
             if response.status_code == 202:
                 return redirect(f"/view_profile/{user_id}")
+
+            # In case of failure it will go back to edit profile with appropriate message
             return redirect(f"/edit_profile/{user_id}")
 
         return render_template("edit_profile.html", page_title="Edit Profile", data=json_data["data"])
@@ -165,16 +178,43 @@ def edit_profile(user_id):
     return data, resp.status_code
 
 
-@app.route("/courses/student/<int:user_id>")
-def demo(user_id):
-    return "pass"
+# Controller for New Students
+@app.route("/<int:user_id>/new_students/admin")
+def new_students(user_id):
+    """Controller Function for handling new students list Page"""
+
+    # hitting API to get data
+    req = requests.get("http://127.0.0.1:5001/api/new_students")
+
+    # If response is success then rendering template with data
+    if req.status_code == 200:
+        info = req.json()["data"]
+        data = {"user_id": user_id}
+        return render_template("new_students.html", data=data, students=info, admin=True, page_title="New Students List")
+
+    # If response is failure then returning status code
+    return req.status_code
 
 
-@app.route("/admin")
-def demo1():
-    return "admin page"
+# Controller for approving students
+@app.route("/<int:user_id>/student/approve", methods=["GET"])
+def approve_student(user_id):
+    """Controller Function for handling approve functionality"""
+
+    data = json.dumps({"user_id": user_id})
+    headers = {"Content-Type": "application/json"}
+
+    # hitting API to update student status
+    req = requests.put("http://127.0.0.1:5001/api/student/approve", data=data, headers=headers)
+    msg = req.json()["message"]
+    flash(msg)
+    return redirect(f"/{user_id}/new_students/admin")
 
 
+from course_controller import *
+from other_controller import *
+from review_controller import *
+from enrollment_controller import *
 
 
 if __name__ == "__main__":

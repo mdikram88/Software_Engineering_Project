@@ -133,3 +133,6 @@ def add_bulk_enrollments(user_id):
                                records=data_1["data"], data=data, success=False)
 
 
+@app.route("/<int:user_id>/export_data/admin", methods=["GET"])
+def export_data(user_id):
+    pass

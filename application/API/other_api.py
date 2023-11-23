@@ -62,13 +62,13 @@ def export():
     reviews_df = pd.DataFrame(reviews_data)
 
     # Saving each dataframe in seperate sheet of excel workbook
-    with pd.ExcelWriter('./static/output.xlsx', engine='xlsxwriter') as writer:
+    with pd.ExcelWriter('./application/Controller/static/output.xlsx', engine='xlsxwriter') as writer:
         users_df.to_excel(writer, sheet_name='Users', index=False)
         enrollments_df.to_excel(writer, sheet_name='Enrollments', index=False)
         courses_df.to_excel(writer, sheet_name='Courses', index=False)
         reviews_df.to_excel(writer, sheet_name="Reviews", index=False)
 
-    return send_file('./static/output.xlsx', as_attachment=True, download_name='output.xlsx'), 200
+    return send_file('./application/Controller/static/output.xlsx', as_attachment=True, download_name='output.xlsx'), 200
 
 
 # --------------------- Admin Courses List API------------------------

@@ -174,6 +174,8 @@ def course_recommender():
         return resp
 
     user = Users.query.get(data["user_id"])
+    if not user:
+        return make_response(jsonify({"message": "user_id is invalid"}), 404)
 
     # Creating data dictionary for particular user
     user_data = {

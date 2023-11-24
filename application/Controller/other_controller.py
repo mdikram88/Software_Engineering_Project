@@ -132,7 +132,3 @@ def add_bulk_enrollments(user_id):
         return render_template("enrollments_report.html", page_title="Enrollment Reports", admin=True,
                                records=data_1["data"], data=data, success=False)
 
-
-@app.route("/<int:user_id>/export_data/admin", methods=["GET"])
-def export_data(user_id):
-    pass

@@ -214,6 +214,9 @@ def validate_recommender_data(data):
     if not isinstance(data["no_of_courses"], int):
         return make_response(jsonify({"message": "no_of_courses should be integer"}), 400), False
 
+    if data["no_of_courses"] < 1:
+        return make_response(jsonify({"message": "no_of_courses should be atleast 1"}), 400), False
+
     if "study_hour" not in data:
         return make_response(jsonify({"message": "study_hour is required"}), 404), False
 

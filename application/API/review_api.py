@@ -104,10 +104,8 @@ class ReviewsAPI(Resource):
     def delete(review_id):
         """API Function for deleting Review"""
 
-        data = request.get_json()
-
         # Verifying if review_id is valid
-        review = Reviews.query.get(data["review_id"])
+        review = Reviews.query.get(review_id)
         if not review:
             return make_response(jsonify({"message": "Invalid Review Id"}), 404)
 

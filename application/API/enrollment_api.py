@@ -109,16 +109,16 @@ class EnrollmentAPI(Resource):
     def put(enroll_id):
         """API Function for updating enrollment data"""
 
+        # Verifying enrollment exists
+        enrollment = Enrollments.query.get(enroll_id)
+        if not enrollment:
+            return make_response(jsonify({"message": "Enrollment id is invalid"}), 404)
+
         data = request.get_json()
         resp, status = validate_update_enroll_data(data)
 
         if not status:
             return resp
-
-        # Verifying enrollment exists
-        enrollment = Enrollments.query.get(enroll_id)
-        if not enrollment:
-            return make_response(jsonify({"message": "Enrollment id is invalid"}), 404)
 
         enrollment.marks = data["marks"]
         enrollment.term = data["term"]

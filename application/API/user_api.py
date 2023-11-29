@@ -147,12 +147,10 @@ def approve_student():
     if not user:
         return make_response(jsonify({"message": "invalid user_id"}), 404)
 
-    print(user.verified)
     try:
         # trying to make changes and save
         user.verified = True
         db.session.commit()
-        print(user.verified)
         return make_response(jsonify({"message": "User approved"}), 200)
 
     except:
@@ -183,9 +181,10 @@ class ProfileAPI(Resource):
         """API Function to get User record"""
 
         user_obj = Users.query.filter_by(user_id=user_id).first()
-        if user_obj:
-            return make_response(jsonify({"data": user_obj.get_dictionary()}), 200)
-        return make_response(jsonify({"message": "Invalid user_id"}), 404)
+        if not user_obj:
+            return make_response(jsonify({"message": "Invalid user_id"}), 404)
+        return make_response(jsonify({"data": user_obj.get_dictionary()}), 200)
+
 
     @staticmethod
     def post():

@@ -109,6 +109,14 @@ class TestOtherCases:
         assert "estimated_marks" in json_data["data"][0]
         assert type(json_data["data"][0]["course_name"]).__name__ == 'str'
         assert type(json_data["data"][0]["estimated_marks"]).__name__ == 'float'
+        assert json_data == {
+                                "data": [
+                                    {
+                                        "course_name": "Java",
+                                        "estimated_marks": 90.0
+                                    }
+                                ]
+                            }
 
     def test_course_recommender_invalid_id(self, client):
         payload = {

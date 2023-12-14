@@ -16,6 +16,7 @@ def student_dashboard(user_id):
     # If success then rendering template with data
     if resp.status_code == 200:
         json_data = resp.json()
+        json_data["user_id"] = user_id
         return render_template("course_list.html", data=json_data, page_title="Student Dashboard", user_id=user_id)
 
     # In case of failure, sending appropriate message

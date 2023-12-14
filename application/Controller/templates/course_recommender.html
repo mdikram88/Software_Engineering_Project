@@ -142,7 +142,7 @@
                             <tbody>
                                 {% for course in courses %}
                                     <tr>
-                                        <td class="col-1"></td>
+                                        <td class="col-1">{{loop.index}}</td>
                                         <td class="col-7">{{ course.course_name}}</td>
                                         <td class="col-4">{{ course.estimated_marks }}</td>
                                     </tr>

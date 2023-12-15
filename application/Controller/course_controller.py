@@ -112,6 +112,7 @@ def edit_course(user_id, course_id):
     resp = requests.get(f"http://127.0.0.1:5001/api/course/{course_id}")
     if resp.status_code == 200:
         json_data = resp.json()
+        json_data["data"]["user_id"] = user_id
 
     # In case of post request getting modified data
     if request.method == "POST":
@@ -145,11 +146,11 @@ def edit_course(user_id, course_id):
         # In case of failure reverting to current page with appropriate message
         else:
             return render_template("edit_course.html", page_title="Edit Course", data=json_data["data"], admin=True,
-                                   user_id=user_id)
+                                   )
 
     # Rendering template for get request
     return render_template("edit_course.html", page_title="Edit Course", data=json_data["data"], admin=True,
-                           user_id=user_id)
+                           )
 
 
 # For deleting course

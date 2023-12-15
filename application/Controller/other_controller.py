@@ -93,6 +93,11 @@ def course_recommender(user_id):
                 return render_template("course_recommender.html", suggest=True, courses=data1, levels=data["levels"],
                                        user_id=data["user_id"], data=info)
 
+            elif response1.status_code == 400:
+                msg = response1.json()["data"]
+                flash(msg)
+                return redirect(f"/{user_id}/course_recommender")
+
             # In case of failure, showing appropriate message
             elif response1.status_code == 500:
 

@@ -7,6 +7,7 @@ from application.API.additional_functions_2 import create_pie_chart, create_pie_
 from application.API.additional_functions import get_course_details, get_review_details
 import pandas as pd
 import datetime as dt
+import json
 
 scheduler = BackgroundScheduler()
 
@@ -158,7 +159,7 @@ def get_user_name(user_id):
     l = []
     for level in levels:
         l.append(level[0])
-    return make_response(jsonify({"data": {"user_id": user_id, "name": user.name, "levels": l}}), 200)
+    return make_response(jsonify({"data": {"user_id": user_id, "name": user.name, "levels": sorted(l)}}), 200)
 
 
 # -----------------Course Recommender API---------------------
@@ -187,6 +188,10 @@ def course_recommender():
 
     # fetching all courses of desired level
     courses = Courses.query.filter_by(level=data["level"]).all()
+
+    if data["no_of_courses"] > len(courses):
+        return make_response(jsonify({"data": f"Number of Courses available for level {data['level']} is less than "
+                                              f"what you selected"}), 400)
 
     courses_data = {"course_id": [], "duration": [], "difficulty": [],
                     "rating": [], "support": []}
@@ -292,7 +297,7 @@ def add_bulk_enrollments():
         else:
             # If not existing then skipping record and keeping a track of the issue
             d = {"username": json_data["username"], "email": json_data["email"],
-                 "message": "Either username/email is/are invalid or are not of same account"}
+                 "message": "Either username/email or both are invalid or are not of same account"}
 
             errors.append(d)
             continue

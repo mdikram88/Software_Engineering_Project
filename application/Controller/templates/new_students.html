@@ -12,12 +12,12 @@
         </li>
       {% else %}
           <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/{{user_id}}/admin_dashboard">Home</a>
+          <a class="nav-link" aria-current="page" href="/{{data.user_id}}/admin_dashboard">Home</a>
         </li>
       {% endif %}
       {% if not admin %}
         <li class="nav-item">
-          <a class="nav-link active" href="/{{data.user_id}}/course_recommender">Course Recommender</a>
+          <a class="nav-link" href="/{{data.user_id}}/course_recommender">Course Recommender</a>
         </li>
       {% else %}
         <li class="nav-item">
@@ -97,5 +97,6 @@
     </table>
     <div class="row"><br><br>
     <br></div>
+</div>
 
 {% endblock %}

@@ -269,6 +269,7 @@ def add_bulk_enrollments():
 
     # iterating over file data
     errors = []
+    print(df.head(5))
     for index, row in df.iterrows():
         # Convert the row to a JSON object
         json_data = json.loads(row.to_json())

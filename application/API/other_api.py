@@ -39,6 +39,11 @@ scheduler.add_job(create_charts, 'interval', seconds=60*60*4)
 scheduler.start()
 
 
+@app.route("/", methods=["GET"])
+def hello():
+    return  make_response(jsonify({"message": "Hello!, Welcome to Course Recommender API Server of Team 07 of Sept-2023, Please refer to API doc for help to use the server"}), 200)
+
+
 # ------------------- Export Data API -----------------------
 @app.route("/api/export_data", methods=["GET"])
 def export():

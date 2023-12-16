@@ -37,14 +37,15 @@ def view_course(user_id, course_id):
     # If success then rendering template
     if resp.status_code == 200:
         json_data = resp.json()
-        json_data["user_id"] = user_id
+        json_data["data"]["user_id"] = user_id
+
         # Checking if it's an admin or normal student
         if user_id not in ADMINS:
             return render_template("course_page.html", page_title="Course Page", data=json_data["data"],
                                    user_id=user_id, admin=False)
 
         return render_template("course_page.html", page_title="Course Page", data=json_data["data"],
-                               user_id=user_id, admin=True)
+                                admin=True)
 
     # In case of failure, sending appropriate message
     elif resp.status_code == 404:
